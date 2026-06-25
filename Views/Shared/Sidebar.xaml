@@ -1,0 +1,16 @@
+<UserControl x:Class="staymanager_pj.Views.Shared.Sidebar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Width="220">
+    <Border Background="#2F2F2F" Padding="12">
+        <StackPanel>
+            <TextBlock Text="StayManager" FontSize="20" FontWeight="Bold" Foreground="White" Margin="0,0,0,16"/>
+            <Button x:Name="btnDashboard" Content="Tổng quan" Height="36" Margin="0,0,0,8"/>
+            <Button x:Name="btnRoomStatus" Content="Phòng" Height="36" Margin="0,0,0,8"/>
+            <Button x:Name="btnInventory" Content="Vật tư" Height="36" Margin="0,0,0,8"/>
+            <Button x:Name="btnBillingInvoices" Content="Hóa đơn" Height="36" Margin="0,0,0,8"/>
+            <Button x:Name="btnLogout" Content="Đăng xuất" Height="36" Margin="0,16,0,0"/>
+        </StackPanel>
+    </Border>
+</UserControl>
+

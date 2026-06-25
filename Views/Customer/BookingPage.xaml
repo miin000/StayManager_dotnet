@@ -1,0 +1,255 @@
+<Window x:Class="staymanager_pj.Views.Customer.BookingPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:shared="clr-namespace:staymanager_pj.Views.Shared"
+        Title="Đặt phòng"
+        Height="900"
+        Width="1200"
+        WindowStartupLocation="CenterScreen"
+        Background="#F5F5F5">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <shared:TopBar Grid.Row="0"/>
+
+        <ScrollViewer Grid.Row="1"
+                      VerticalScrollBarVisibility="Auto">
+            <StackPanel Width="980"
+                        HorizontalAlignment="Center"
+                        Margin="0,26,0,40">
+
+                <TextBlock Text="Hoàn Tất Đặt Phòng"
+                           FontSize="24"
+                           FontWeight="Bold"
+                           TextAlignment="Center"/>
+
+                <TextBlock Text="Vui lòng cung cấp thông tin để chúng tôi chuẩn bị tốt nhất cho kỳ nghỉ dưỡng của quý khách."
+                           FontSize="13"
+                           Foreground="#444444"
+                           TextAlignment="Center"
+                           Margin="0,8,0,28"/>
+
+                <!-- Step indicator -->
+                <Grid Width="560"
+                      HorizontalAlignment="Center"
+                      Margin="0,0,0,30">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0"
+                                HorizontalAlignment="Center">
+                        <TextBlock Text="✓"
+                                   FontSize="20"
+                                   TextAlignment="Center"/>
+                        <TextBlock Text="Chọn Phòng"
+                                   FontSize="12"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1"
+                                HorizontalAlignment="Center">
+                        <Border Width="30"
+                                Height="30"
+                                CornerRadius="15"
+                                Background="#E6E6E6">
+                            <TextBlock Text="2"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Foreground="#333333"
+                                       FontWeight="Bold"/>
+                        </Border>
+                        <TextBlock Text="Thông Tin Khách"
+                                   FontSize="12"
+                                   FontWeight="Bold"
+                                   Margin="0,6,0,0"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2"
+                                HorizontalAlignment="Center">
+                        <TextBlock Text="3"
+                                   FontSize="18"
+                                   TextAlignment="Center"/>
+                        <TextBlock Text="Thanh Toán"
+                                   FontSize="12"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="300"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Customer form -->
+                    <Border Grid.Column="0"
+                            Background="White"
+                            BorderBrush="#D9D9D9"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Padding="18"
+                            Margin="0,0,18,0">
+                        <StackPanel>
+                            <TextBlock Text="Thông Tin Khách Hàng"
+                                       FontWeight="Bold"
+                                       Margin="0,0,0,18"/>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0"
+                                            Margin="0,0,8,0">
+                                    <TextBlock Text="Họ Và Tên *"
+                                               FontSize="12"/>
+                                    <TextBox x:Name="txtFullName"
+                                             Height="34"
+                                             Margin="0,6,0,14"/>
+
+                                    <TextBlock Text="Email *"
+                                               FontSize="12"/>
+                                    <TextBox x:Name="txtEmail"
+                                             Height="34"
+                                             Margin="0,6,0,14"/>
+
+                                    <TextBlock Text="CCCD / Passport *"
+                                               FontSize="12"/>
+                                    <TextBox x:Name="txtIdentityNumber"
+                                             Height="34"
+                                             Margin="0,6,0,14"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1"
+                                            Margin="8,0,0,0">
+                                    <TextBlock Text="Số Điện Thoại *"
+                                               FontSize="12"/>
+                                    <TextBox x:Name="txtPhoneNumber"
+                                             Height="34"
+                                             Margin="0,6,0,14"/>
+
+                                    <TextBlock Text="Quốc Tịch"
+                                               FontSize="12"/>
+                                    <ComboBox x:Name="cbNationality"
+                                              Height="34"
+                                              Margin="0,6,0,14">
+                                        <ComboBoxItem Content="Việt Nam"/>
+                                        <ComboBoxItem Content="United States"/>
+                                        <ComboBoxItem Content="Japan"/>
+                                        <ComboBoxItem Content="Korea"/>
+                                    </ComboBox>
+                                </StackPanel>
+                            </Grid>
+
+                            <TextBlock Text="Yêu Cầu Đặc Biệt"
+                                       FontSize="12"/>
+                            <TextBox x:Name="txtSpecialRequest"
+                                     Height="90"
+                                     AcceptsReturn="True"
+                                     TextWrapping="Wrap"
+                                     Margin="0,6,0,10"/>
+
+                            <TextBlock Text="Chúng tôi sẽ cố gắng đáp ứng yêu cầu của quý khách trong khả năng có thể."
+                                       FontSize="12"
+                                       Foreground="#666666"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Summary -->
+                    <Border Grid.Column="1"
+                            Background="White"
+                            BorderBrush="#D9D9D9"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            VerticalAlignment="Top">
+                        <StackPanel>
+                            <Border Height="130"
+                                    Background="#C8C8C8"
+                                    CornerRadius="6,6,0,0">
+                                <TextBlock Text="Ocean View Suite"
+                                           Foreground="White"
+                                           FontWeight="Bold"
+                                           VerticalAlignment="Bottom"
+                                           Margin="14"/>
+                            </Border>
+
+                            <StackPanel Margin="16">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="NHẬN PHÒNG"
+                                                   FontSize="11"
+                                                   FontWeight="Bold"/>
+                                        <TextBlock Text="14:00 PM"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="TRẢ PHÒNG"
+                                                   FontSize="11"
+                                                   FontWeight="Bold"/>
+                                        <TextBlock Text="12:00 PM"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Separator Margin="0,16"/>
+
+                                <TextBlock Text="Khách"
+                                           FontWeight="SemiBold"/>
+                                <TextBlock Text="2 Người lớn, 0 Trẻ em"
+                                           Foreground="#666666"
+                                           Margin="0,4,0,12"/>
+
+                                <DockPanel>
+                                    <TextBlock Text="Giá phòng"/>
+                                    <TextBlock Text="15,000,000 VND"
+                                               DockPanel.Dock="Right"/>
+                                </DockPanel>
+
+                                <DockPanel Margin="0,8,0,0">
+                                    <TextBlock Text="Thuế &amp; Phí"/>
+                                    <TextBlock Text="1,500,000 VND"
+                                               DockPanel.Dock="Right"/>
+                                </DockPanel>
+
+                                <Separator Margin="0,16"/>
+
+                                <DockPanel>
+                                    <TextBlock Text="Tổng tiền"
+                                               FontWeight="Bold"/>
+                                    <TextBlock Text="16,500,000 VND"
+                                               DockPanel.Dock="Right"
+                                               FontWeight="Bold"/>
+                                </DockPanel>
+
+                                <Button x:Name="btnConfirmBooking"
+                                        Content="XÁC NHẬN ĐẶT PHÒNG"
+                                        Height="40"
+                                        Margin="0,18,0,0"
+                                        Background="#4A4A4A"
+                                        BorderBrush="#4A4A4A"
+                                        Foreground="White"
+                                        FontWeight="Bold"/>
+
+                                <TextBlock Text="Bạn chưa bị trừ tiền ở bước này."
+                                           TextAlignment="Center"
+                                           Foreground="#666666"
+                                           FontSize="12"
+                                           Margin="0,12,0,0"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>

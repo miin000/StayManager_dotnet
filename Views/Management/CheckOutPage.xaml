@@ -1,0 +1,19 @@
+<Window x:Class="staymanager_pj.Views.Management.CheckOutPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:staymanager_pj.Views.Shared"
+        Title="Check-In/Out" Height="900" Width="1200">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <local:Sidebar Grid.Column="0"/>
+
+        <StackPanel Grid.Column="1" Margin="20">
+            <TextBlock Text="Quản lý Front Desk" FontSize="24" FontWeight="Bold" Margin="10"/>
+            <ItemsControl x:Name="icCheckList"/>
+        </StackPanel>
+    </Grid>
+</Window>
