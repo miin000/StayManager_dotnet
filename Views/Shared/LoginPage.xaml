@@ -13,7 +13,6 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Left visual -->
         <Grid Grid.Column="0">
             <Grid.Background>
                 <SolidColorBrush Color="#3A3A3A"/>
@@ -41,7 +40,6 @@
             </StackPanel>
         </Grid>
 
-        <!-- Login form -->
         <Grid Grid.Column="1"
               Background="White">
             <Border Width="390"
@@ -55,10 +53,47 @@
                                FontWeight="Bold"
                                Foreground="#1F1F1F"/>
 
-                    <TextBlock Text="Chào mừng bạn quay lại Luxe Reserve."
+                    <TextBlock Text="Chọn đúng loại tài khoản để vào đúng khu vực hệ thống."
                                FontSize="13"
                                Foreground="#666666"
-                               Margin="0,8,0,28"/>
+                               Margin="0,8,0,20"/>
+
+                    <Border Background="#F3F3F3"
+                            CornerRadius="8"
+                            Padding="8"
+                            Margin="0,0,0,20">
+                        <UniformGrid Columns="3">
+                            <RadioButton x:Name="rbCustomer"
+                                         Content="Khách hàng"
+                                         IsChecked="True"
+                                         GroupName="LoginRole"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         Padding="10,8"
+                                         FontWeight="SemiBold"/>
+                            <RadioButton x:Name="rbAdmin"
+                                         Content="Admin"
+                                         GroupName="LoginRole"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         Padding="10,8"
+                                         FontWeight="SemiBold"/>
+                            <RadioButton x:Name="rbStaff"
+                                         Content="Staff"
+                                         GroupName="LoginRole"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         Padding="10,8"
+                                         FontWeight="SemiBold"/>
+                        </UniformGrid>
+                    </Border>
+
+                    <TextBlock x:Name="txtRoleHint"
+                               Text="Khách hàng sẽ vào trang chủ đặt phòng sau khi đăng nhập."
+                               FontSize="12"
+                               Foreground="#666666"
+                               TextWrapping="Wrap"
+                               Margin="0,0,0,20"/>
 
                     <TextBlock Text="Tên đăng nhập"
                                FontSize="13"
