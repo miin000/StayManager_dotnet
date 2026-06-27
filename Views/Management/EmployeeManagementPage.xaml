@@ -10,9 +10,178 @@
         </Grid.ColumnDefinitions>
 
         <local:Sidebar Grid.Column="0"/>
-        <StackPanel Grid.Column="1" Margin="20">
-            <TextBlock Text="Danh sách nhân viên" FontSize="24" FontWeight="Bold" Margin="10"/>
-            <ItemsControl x:Name="icEmployees"/>
-        </StackPanel>
+        <Grid Grid.Column="1" Margin="25">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+
+            <TextBox Width="380"
+         Height="40"
+         HorizontalAlignment="Left"
+         Padding="12,0"
+         FontSize="14"
+         VerticalContentAlignment="Center"
+         Text="Tìm kiếm nhân viên..."
+         Foreground="Gray"/>
+
+            <Grid Grid.Row="1" Margin="0,20,0,20">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel>
+
+                    <TextBlock
+                Text="Quản lý Nhân viên"
+                FontSize="28"
+                FontWeight="Bold"/>
+
+                    <TextBlock
+                Margin="0,5,0,0"
+                Text="Xem, thêm và quản lý thông tin nhân sự của khách sạn."
+                Foreground="Gray"
+                FontSize="14"/>
+
+                </StackPanel>
+
+                <Button Grid.Column="1"
+                Width="180"
+                Height="42"
+                Content="+ Thêm nhân viên mới"
+                Background="#8B6A1E"
+                Foreground="White"
+                FontWeight="SemiBold"/>
+
+            </Grid>
+
+            <!-- Filter -->
+            <Border Grid.Row="2"
+        Background="White"
+        BorderBrush="#E5E7EB"
+        BorderThickness="1"
+        CornerRadius="8"
+        Padding="15"
+        Margin="0,0,0,20">
+
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="220"/>
+                        <ColumnDefinition Width="220"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="90"/>
+                        <ColumnDefinition Width="90"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Width="210"
+          Height="38"
+          HorizontalAlignment="Left">
+                        <ComboBoxItem IsSelected="True">Tất cả phòng ban</ComboBoxItem>
+                        <ComboBoxItem>Lễ tân</ComboBoxItem>
+                        <ComboBoxItem>Buồng phòng</ComboBoxItem>
+                        <ComboBoxItem>Kế toán</ComboBoxItem>
+                    </ComboBox>
+
+                    <ComboBox Grid.Column="1"
+          Width="210"
+          Height="38"
+          Margin="10,0,0,0">
+                        <ComboBoxItem IsSelected="True">Tất cả trạng thái</ComboBoxItem>
+                        <ComboBoxItem>Đang làm việc</ComboBoxItem>
+                        <ComboBoxItem>Nghỉ phép</ComboBoxItem>
+                    </ComboBox>
+
+                    <Button Grid.Column="3"
+                Width="80"
+                Height="35"
+                Content="Lọc"/>
+
+                    <Button Grid.Column="4"
+                Width="80"
+                Height="35"
+                Margin="10,0,0,0"
+                Content="Xuất"/>
+
+                </Grid>
+
+            </Border>
+
+            <DataGrid x:Name="dgEmployees"
+          Grid.Row="3"
+          AutoGenerateColumns="False"
+          CanUserAddRows="False"
+          IsReadOnly="True"
+          HeadersVisibility="Column"
+          GridLinesVisibility="Horizontal"
+          RowHeight="45"
+          ColumnHeaderHeight="45"
+          Margin="0,10,0,0"
+          Background="White"
+          BorderBrush="#E5E7EB"
+          BorderThickness="1">
+
+                <DataGrid.Columns>
+
+                    <!-- Nhân viên -->
+                    <DataGridTemplateColumn Header="Nhân viên" Width="240">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="5">
+                                    <TextBlock Text="{Binding FullName}"
+                               FontWeight="SemiBold"/>
+                                    <TextBlock Text="{Binding Email}"
+                               FontSize="11"
+                               Foreground="Gray"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!-- Mã NV -->
+                    <DataGridTextColumn Header="Mã NV"
+                    Binding="{Binding Id}"
+                    Width="90"/>
+
+                    <!-- Vai trò -->
+                    <DataGridTextColumn Header="Vai trò"
+                        Binding="{Binding Role}"
+                        Width="150"/>
+
+                    <!-- Phòng ban -->
+                    <DataGridTextColumn Header="Phòng ban"
+                    Binding="{Binding Position}"
+                    Width="180"/>
+
+                    <!-- Trạng thái -->
+                    <DataGridTextColumn Header="Trạng thái"
+                    Binding="{Binding IsActive}"
+                    Width="150"/>
+
+                    <!-- Thao tác -->
+                    <DataGridTemplateColumn Header="Thao tác"
+                            Width="100">
+
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="⋮"
+                        Width="35"
+                        Height="30"/>
+                            </DataTemplate>
+
+                        </DataGridTemplateColumn.CellTemplate>
+
+                    </DataGridTemplateColumn>
+
+                </DataGrid.Columns>
+
+            </DataGrid>
+
+        </Grid>
     </Grid>
 </Window>
