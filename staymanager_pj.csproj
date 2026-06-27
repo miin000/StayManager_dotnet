@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -91,6 +92,7 @@
     </ApplicationDefinition>
     <Compile Include="Data\Data.cs" />
     <Compile Include="Data\DbInitializer.cs" />
+    <Compile Include="Data\MySqlConfiguration.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\Enums.cs" />

@@ -1,16 +1,18 @@
 ﻿using staymanager_pj.Models;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Runtime.Remoting.Contexts;
 
 namespace staymanager_pj.Data
 {
+    [DbConfigurationType(typeof(MySqlConfiguration))]
     public class AppDbContext : DbContext
     {
-        public AppDbContext() : base("name=StayManagerDbContext")
+        static AppDbContext()
         {
             Database.SetInitializer(new DbInitializer());
-            Database.Initialize(false);
+        }
+
+        public AppDbContext() : base("name=StayManagerDbContext")
+        {
         }
 
         public DbSet<Customer> Customers { get; set; }
