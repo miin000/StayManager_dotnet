@@ -24,5 +24,20 @@ namespace staymanager_pj.Views.Management
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private void BtnAdd_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Chức năng thêm nhân viên đang phát triển.");
+        }
+
+        private void BtnFilter_Click(object sender, RoutedEventArgs e)
+        {
+            LoadEmployees();
+        }
+
+        private void BtnExport_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Chức năng xuất dữ liệu sẽ được bổ sung.");
+        }
     }
 }
