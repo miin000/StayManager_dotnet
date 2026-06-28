@@ -2,17 +2,214 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:staymanager_pj.Views.Shared"
-        Title="Quản lý khách hàng" Height="900" Width="1200">
+        Title="Quản lý khách hàng"
+        Height="900"
+        Width="1200">
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
+        <!-- Sidebar -->
         <local:Sidebar Grid.Column="0"/>
-        <StackPanel Grid.Column="1" Margin="20">
-            <TextBlock Text="Danh sách khách hàng" FontSize="24" FontWeight="Bold" Margin="10"/>
-            <ItemsControl x:Name="icCustomers"/>
-        </StackPanel>
+
+        <!-- Main -->
+        <Grid Grid.Column="1" Margin="25">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Search -->
+            <TextBox Width="380"
+                     Height="40"
+                     HorizontalAlignment="Left"
+                     Padding="12,0"
+                     FontSize="14"
+                     VerticalContentAlignment="Center"
+                     Text="Tìm kiếm khách hàng..."
+                     Foreground="Gray"/>
+
+            <!-- Title -->
+            <Grid Grid.Row="1" Margin="0,20,0,20">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel>
+
+                    <TextBlock
+                        Text="Quản lý Khách hàng"
+                        FontSize="28"
+                        FontWeight="Bold"/>
+
+                    <TextBlock
+                        Margin="0,5,0,0"
+                        Text="Xem và quản lý thông tin khách hàng của khách sạn."
+                        Foreground="Gray"
+                        FontSize="14"/>
+
+                </StackPanel>
+
+                <Button Grid.Column="1"
+                        Width="170"
+                        Height="42"
+                        Margin="0,0,10,0"
+                        Content="+ Thêm khách hàng"
+                        Background="#8B6A1E"
+                        Foreground="White"
+                        FontWeight="SemiBold"/>
+
+            </Grid>
+
+            <!-- Filter -->
+            <Border Grid.Row="2"
+                    Background="White"
+                    BorderBrush="#E5E7EB"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="15"
+                    Margin="0,0,0,20">
+
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="220"/>
+                        <ColumnDefinition Width="220"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="90"/>
+                        <ColumnDefinition Width="90"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Width="210"
+                              Height="38"
+                              HorizontalAlignment="Left">
+
+                        <ComboBoxItem IsSelected="True">Tất cả khách hàng</ComboBoxItem>
+                        <ComboBoxItem>VIP</ComboBoxItem>
+                        <ComboBoxItem>Thường</ComboBoxItem>
+
+                    </ComboBox>
+
+                    <ComboBox Grid.Column="1"
+                              Width="210"
+                              Height="38"
+                              Margin="10,0,0,0">
+
+                        <ComboBoxItem IsSelected="True">Tất cả trạng thái</ComboBoxItem>
+                        <ComboBoxItem>Đang lưu trú</ComboBoxItem>
+                        <ComboBoxItem>Đã trả phòng</ComboBoxItem>
+
+                    </ComboBox>
+
+                    <Button Grid.Column="3"
+                            Width="70"
+                            Height="35"
+                            Content="Lọc"/>
+
+                    <Button Grid.Column="4"
+                            Width="70"
+                            Height="35"
+                            Margin="10,0,0,0"
+                            Content="Xuất"/>
+
+                </Grid>
+
+            </Border>
+
+            <!-- DataGrid -->
+            <DataGrid x:Name="dgCustomers"
+                      Grid.Row="3"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      IsReadOnly="True"
+                      HeadersVisibility="Column"
+                      GridLinesVisibility="Horizontal"
+                      RowHeight="45"
+                      ColumnHeaderHeight="45"
+                      Margin="0,10,0,0"
+                      Background="White"
+                      BorderBrush="#E5E7EB"
+                      BorderThickness="1">
+
+                <DataGrid.Columns>
+
+                    <!-- Khách hàng -->
+                    <DataGridTemplateColumn Header="Khách hàng"
+                                            Width="2*">
+
+                        <DataGridTemplateColumn.CellTemplate>
+
+                            <DataTemplate>
+
+                                <StackPanel Margin="5">
+
+                                    <TextBlock Text="{Binding FullName}"
+                                               FontWeight="SemiBold"/>
+
+                                    <TextBlock Text="{Binding Email}"
+                                               FontSize="11"
+                                               Foreground="Gray"/>
+
+                                </StackPanel>
+
+                            </DataTemplate>
+
+                        </DataGridTemplateColumn.CellTemplate>
+
+                    </DataGridTemplateColumn>
+
+                    <!-- Mã KH -->
+                    <DataGridTextColumn Header="Mã KH"
+                                        Binding="{Binding Id}"
+                                        Width="*"/>
+
+                    <!-- SĐT -->
+                    <DataGridTextColumn Header="SĐT"
+                                        Binding="{Binding PhoneNumber}"
+                                        Width="*"/>
+
+                    <!-- Email -->
+                    <DataGridTextColumn Header="Email"
+                                        Binding="{Binding Email}"
+                                        Width="2*"/>
+
+                    <!-- CCCD -->
+                    <DataGridTextColumn Header="CCCD"
+                                        Binding="{Binding IdentityNumber}"
+                                        Width="*"/>
+
+                    <!-- Thao tác -->
+                    <DataGridTemplateColumn Header="Thao tác"
+                                            Width="80">
+
+                        <DataGridTemplateColumn.CellTemplate>
+
+                            <DataTemplate>
+
+                                <Button Content="⋮"
+                                        Width="35"
+                                        Height="30"/>
+
+                            </DataTemplate>
+
+                        </DataGridTemplateColumn.CellTemplate>
+
+                    </DataGridTemplateColumn>
+
+                </DataGrid.Columns>
+
+            </DataGrid>
+
+        </Grid>
+
     </Grid>
+
 </Window>

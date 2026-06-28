@@ -51,12 +51,13 @@
                 </StackPanel>
 
                 <Button Grid.Column="1"
-                Width="180"
-                Height="42"
-                Content="+ Thêm nhân viên mới"
-                Background="#8B6A1E"
-                Foreground="White"
-                FontWeight="SemiBold"/>
+        Width="180"
+        Height="42"
+        Content="+ Thêm nhân viên mới"
+        Background="#8B6A1E"
+        Foreground="White"
+        FontWeight="SemiBold"
+        Click="BtnAdd_Click"/>
 
             </Grid>
 
@@ -98,15 +99,17 @@
                     </ComboBox>
 
                     <Button Grid.Column="3"
-                Width="80"
-                Height="35"
-                Content="Lọc"/>
+        Width="80"
+        Height="35"
+        Content="Lọc"
+        Click="BtnFilter_Click"/>
 
                     <Button Grid.Column="4"
-                Width="80"
-                Height="35"
-                Margin="10,0,0,0"
-                Content="Xuất"/>
+        Width="80"
+        Height="35"
+        Margin="10,0,0,0"
+        Content="Xuất"
+        Click="BtnExport_Click"/>
 
                 </Grid>
 
