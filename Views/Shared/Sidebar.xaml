@@ -9,8 +9,10 @@
             <Button x:Name="btnRoomStatus" Content="Phòng" Height="36" Margin="0,0,0,8"/>
             <Button x:Name="btnInventory" Content="Vật tư" Height="36" Margin="0,0,0,8"/>
             <Button x:Name="btnBillingInvoices" Content="Hóa đơn" Height="36" Margin="0,0,0,8"/>
+            <Button x:Name="btnAnalytics" Content="Thống kê" Height="36" Margin="0,0,0,8"/>
             <Button x:Name="btnLogout" Content="Đăng xuất" Height="36" Margin="0,16,0,0"/>
         </StackPanel>
     </Border>
 </UserControl>
+
 

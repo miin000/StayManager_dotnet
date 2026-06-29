@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 
 namespace staymanager_pj.Views.Management
 {
@@ -20,6 +21,7 @@ namespace staymanager_pj.Views.Management
             dgInventory.SelectionChanged += (s, e) => FillForm(dgInventory.SelectedItem as InventoryItem);
             btnRefresh.Click += (s, e) => LoadData();
             btnSearch.Click += (s, e) => ApplySearch();
+            txtSearch.KeyDown += TxtSearch_KeyDown;
             btnNew.Click += (s, e) => ClearForm();
             btnSave.Click += BtnSave_Click;
             btnDelete.Click += BtnDelete_Click;
@@ -30,16 +32,21 @@ namespace staymanager_pj.Views.Management
         {
             _items = _service.GetAll();
             dgInventory.ItemsSource = _items;
+            RestoreSelection();
         }
 
         private void ApplySearch()
         {
             var key = (txtSearch.Text ?? string.Empty).Trim().ToLowerInvariant();
-            dgInventory.ItemsSource = string.IsNullOrWhiteSpace(key)
-                ? _items
-                : _items.Where(x => (x.ItemCode ?? string.Empty).ToLowerInvariant().Contains(key)
-                                 || (x.ItemName ?? string.Empty).ToLowerInvariant().Contains(key)
-                                 || (x.Category ?? string.Empty).ToLowerInvariant().Contains(key)).ToList();
+            dgInventory.ItemsSource = string.IsNullOrWhiteSpace(key) ? _items : _service.Search(key);
+        }
+
+        private void TxtSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                ApplySearch();
+            }
         }
 
         private void FillForm(InventoryItem item)
@@ -56,6 +63,8 @@ namespace staymanager_pj.Views.Management
             txtSellingPrice.Text = item.SellingPrice.ToString("0.##");
             txtNote.Text = item.Note;
             txtImportUnitPrice.Text = item.ImportPrice.ToString("0.##");
+            txtImportQty.Clear();
+            txtSupplier.Clear();
         }
 
         private void ClearForm()
@@ -69,38 +78,31 @@ namespace staymanager_pj.Views.Management
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtName.Text))
+            if (!TryBuildItem(out var item))
             {
-                MessageBox.Show("Nhập tên vật tư.");
                 return;
             }
-
-            var item = new InventoryItem
-            {
-                Id = _selectedId,
-                ItemCode = txtCode.Text.Trim(),
-                ItemName = txtName.Text.Trim(),
-                Category = txtCategory.Text.Trim(),
-                Quantity = ReadInt(txtQuantity.Text),
-                MinimumQuantity = ReadInt(txtMinimum.Text),
-                Unit = txtUnit.Text.Trim(),
-                ImportPrice = ReadDecimal(txtImportPrice.Text),
-                SellingPrice = ReadDecimal(txtSellingPrice.Text),
-                Note = txtNote.Text.Trim()
-            };
 
             _service.Save(item);
             LoadData();
             ClearForm();
+            MessageBox.Show("Lưu vật tư thành công.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void BtnDelete_Click(object sender, RoutedEventArgs e)
         {
             if (_selectedId == 0) return;
             if (MessageBox.Show("Xóa vật tư đang chọn?", "Xác nhận", MessageBoxButton.YesNo) != MessageBoxResult.Yes) return;
-            _service.Delete(_selectedId);
-            LoadData();
-            ClearForm();
+            try
+            {
+                _service.Delete(_selectedId);
+                LoadData();
+                ClearForm();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không xóa được vật tư. Có thể vật tư đã phát sinh dữ liệu nhập kho.\n" + ex.Message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void BtnImport_Click(object sender, RoutedEventArgs e)
@@ -118,9 +120,75 @@ namespace staymanager_pj.Views.Management
                 return;
             }
 
-            _service.ImportStock(_selectedId, qty, ReadDecimal(txtImportUnitPrice.Text), txtSupplier.Text.Trim(), txtNote.Text.Trim());
+            var unitPrice = ReadDecimal(txtImportUnitPrice.Text);
+            if (unitPrice < 0)
+            {
+                MessageBox.Show("Đơn giá nhập không hợp lệ.");
+                return;
+            }
+
+            _service.ImportStock(_selectedId, qty, unitPrice, txtSupplier.Text.Trim(), txtNote.Text.Trim());
             LoadData();
-            txtImportQty.Clear(); txtSupplier.Clear();
+            txtImportQty.Clear(); txtImportUnitPrice.Clear(); txtSupplier.Clear();
+            MessageBox.Show("Nhập kho thành công.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void RestoreSelection()
+        {
+            if (_selectedId == 0)
+            {
+                return;
+            }
+
+            var selected = _items.FirstOrDefault(x => x.Id == _selectedId);
+            if (selected != null)
+            {
+                dgInventory.SelectedItem = selected;
+            }
+        }
+
+        private bool TryBuildItem(out InventoryItem item)
+        {
+            item = null;
+
+            if (string.IsNullOrWhiteSpace(txtName.Text))
+            {
+                MessageBox.Show("Tên vật tư là bắt buộc.");
+                return false;
+            }
+
+            var quantity = ReadInt(txtQuantity.Text);
+            var minimum = ReadInt(txtMinimum.Text);
+            var importPrice = ReadDecimal(txtImportPrice.Text);
+            var sellingPrice = ReadDecimal(txtSellingPrice.Text);
+
+            if (quantity < 0 || minimum < 0)
+            {
+                MessageBox.Show("Số lượng và mức tối thiểu không được âm.");
+                return false;
+            }
+
+            if (importPrice < 0 || sellingPrice < 0)
+            {
+                MessageBox.Show("Giá nhập/giá bán không được âm.");
+                return false;
+            }
+
+            item = new InventoryItem
+            {
+                Id = _selectedId,
+                ItemCode = txtCode.Text.Trim(),
+                ItemName = txtName.Text.Trim(),
+                Category = txtCategory.Text.Trim(),
+                Quantity = quantity,
+                MinimumQuantity = minimum,
+                Unit = txtUnit.Text.Trim(),
+                ImportPrice = importPrice,
+                SellingPrice = sellingPrice,
+                Note = txtNote.Text.Trim()
+            };
+
+            return true;
         }
 
         private static int ReadInt(string text)
@@ -136,4 +204,5 @@ namespace staymanager_pj.Views.Management
         }
     }
 }
+
 

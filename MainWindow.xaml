@@ -5,16 +5,18 @@
     <Grid Margin="24">
         <StackPanel VerticalAlignment="Center">
             <TextBlock Text="StayManager" FontSize="32" FontWeight="Bold" TextAlignment="Center" Margin="0,0,0,8"/>
-            <TextBlock Text="Quản lý khách sạn: vật tư, hóa đơn, phòng, khách hàng" TextAlignment="Center" Margin="0,0,0,28"/>
-            <UniformGrid Columns="2" Rows="3">
+            <TextBlock Text="Quản lý khách sạn: vật tư, hóa đơn, phòng, khách hàng, thống kê" TextAlignment="Center" Margin="0,0,0,28"/>
+            <UniformGrid Columns="2" Rows="4">
                 <Button x:Name="btnInventory" Content="Quản lý vật tư" Height="72" Margin="8" FontSize="16"/>
                 <Button x:Name="btnInvoices" Content="Quản lý hóa đơn" Height="72" Margin="8" FontSize="16"/>
                 <Button x:Name="btnRooms" Content="Quản lý phòng" Height="72" Margin="8" FontSize="16"/>
                 <Button x:Name="btnCustomers" Content="Quản lý khách hàng" Height="72" Margin="8" FontSize="16"/>
                 <Button x:Name="btnEmployees" Content="Quản lý nhân viên" Height="72" Margin="8" FontSize="16"/>
+                <Button x:Name="btnAnalytics" Content="Thống kê" Height="72" Margin="8" FontSize="16"/>
                 <Button x:Name="btnLogin" Content="Đăng nhập" Height="72" Margin="8" FontSize="16"/>
             </UniformGrid>
         </StackPanel>
     </Grid>
 </Window>
+
 

@@ -12,6 +12,10 @@ namespace staymanager_pj
     /// </summary>
     public partial class App : Application
     {
+        public static bool IsDatabaseAvailable { get; private set; }
+
+        public static string DatabaseError { get; private set; }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -24,17 +28,21 @@ namespace staymanager_pj
                 {
                     db.Database.Initialize(false);
                 }
+
+                IsDatabaseAvailable = true;
+                DatabaseError = string.Empty;
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    "Kết nối MySQL thất bại hoặc chưa tạo được bảng.\n\n" + BuildErrorDetails(ex) +
-                    "\n\nKiểm tra lại server, port, user, password trong App.config.",
-                    "Lỗi khởi tạo cơ sở dữ liệu",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                IsDatabaseAvailable = false;
+                DatabaseError = BuildErrorDetails(ex);
 
-                Shutdown(-1);
+                MessageBox.Show(
+                    "Không kết nối được MySQL. Ứng dụng sẽ chạy chế độ dữ liệu mẫu tạm thời cho các màn đã hỗ trợ.\n\n" + DatabaseError +
+                    "\n\nMuốn lưu dữ liệu thật: bật MySQL server, kiểm tra port/user/password trong App.config rồi chạy lại.",
+                    "Cảnh báo cơ sở dữ liệu",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
             }
         }
 

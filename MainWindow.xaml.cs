@@ -14,6 +14,7 @@ namespace staymanager_pj
             btnRooms.Click += (s, e) => Open(new RoomManagementPage());
             btnCustomers.Click += (s, e) => Open(new CustomerManagementPage());
             btnEmployees.Click += (s, e) => Open(new EmployeeManagementPage());
+            btnAnalytics.Click += (s, e) => Open(new AnalyticsPage());
             btnLogin.Click += (s, e) => Open(new LoginPage());
         }
 
@@ -24,4 +25,5 @@ namespace staymanager_pj
         }
     }
 }
+
 
