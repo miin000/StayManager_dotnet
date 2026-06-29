@@ -14,6 +14,8 @@ namespace staymanager_pj.Models
 
         public string RoomType { get; set; }
 
+        public decimal BasePrice { get; set; }
+
         public decimal PricePerNight { get; set; }
 
         public int Capacity { get; set; }

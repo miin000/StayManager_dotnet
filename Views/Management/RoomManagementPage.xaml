@@ -9,7 +9,6 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Sidebar -->
         <local:Sidebar Grid.Column="0"/>
 
         <Grid Grid.Column="1" Margin="20">
@@ -18,36 +17,82 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <DockPanel Margin="10">
-                <TextBlock Text="Quản lý Tình trạng Phòng" FontSize="24" FontWeight="Bold" VerticalAlignment="Center"/>
-                <Button x:Name="btnRefresh" Content="Tải lại" Width="100" Height="32" DockPanel.Dock="Right"/>
-            </DockPanel>
+            <StackPanel Orientation="Horizontal" Margin="10,0,10,12">
+                <TextBlock Text="Quản lý phòng" FontSize="24" FontWeight="Bold" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtSearch" Width="260" Height="32" Margin="24,0,8,0" VerticalContentAlignment="Center" ToolTip="Tìm số phòng, loại phòng"/>
+                <Button x:Name="btnSearch" Content="Tìm" Width="70" Height="32" Margin="0,0,8,0"/>
+                <Button x:Name="btnRefresh" Content="Tải lại" Width="80" Height="32"/>
+            </StackPanel>
 
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                <ItemsControl x:Name="icRooms" Margin="10">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border Width="290" Margin="0,0,16,16" Padding="16" CornerRadius="10" BorderBrush="#FFD0D7E2" BorderThickness="1" Background="WhiteSmoke">
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Room.RoomNumber, StringFormat=Phòng {0}}" FontSize="18" FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding Room.RoomType, StringFormat=Loại: {0}}" Margin="0,6,0,0"/>
-                                    <TextBlock Text="{Binding Room.Capacity, StringFormat=Sức chứa: {0} khách}" Margin="0,4,0,0"/>
-                                    <TextBlock Text="{Binding Room.PricePerNight, StringFormat=Giá: {0:N0} VNĐ/đêm}" Margin="0,4,0,0"/>
-                                    <TextBlock Text="{Binding Room.Description}" TextWrapping="Wrap" Margin="0,8,0,8" MinHeight="40"/>
-                                    <TextBlock Text="{Binding Room.Status, StringFormat=Hiện tại: {0}}" FontWeight="SemiBold" Margin="0,0,0,8"/>
-                                    <ComboBox ItemsSource="{Binding AvailableStatuses}" SelectedItem="{Binding SelectedStatus}" Margin="0,0,0,8"/>
-                                    <Button Content="Cập nhật tình trạng" Height="34" Click="BtnUpdateStatus_Click"/>
-                                </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
+            <Grid Grid.Row="1" Margin="10,0,10,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="380"/>
+                </Grid.ColumnDefinitions>
+
+                <DataGrid x:Name="dgRooms"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          SelectionMode="Single"
+                          Margin="0,0,12,0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Phòng" Binding="{Binding Room.RoomNumber}" Width="80"/>
+                        <DataGridTextColumn Header="Loại" Binding="{Binding Room.RoomType}" Width="120"/>
+                        <DataGridTextColumn Header="Sức chứa" Binding="{Binding Room.Capacity}" Width="80"/>
+                        <DataGridTextColumn Header="Giá cơ bản" Binding="{Binding Room.BasePrice, StringFormat={}{0:N0}}" Width="110"/>
+                        <DataGridTextColumn Header="Vật tư" Binding="{Binding ItemCharge, StringFormat={}{0:N0}}" Width="100"/>
+                        <DataGridTextColumn Header="Giá/đêm" Binding="{Binding Room.PricePerNight, StringFormat={}{0:N0}}" Width="110"/>
+                        <DataGridTextColumn Header="Trạng thái" Binding="{Binding Room.Status}" Width="110"/>
+                        <DataGridTextColumn Header="Đồ trong phòng" Binding="{Binding ItemSummary}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <TextBlock Text="Thông tin phòng" FontSize="18" FontWeight="Bold" Margin="0,0,0,8"/>
+                        <TextBlock Text="Số phòng"/>
+                        <TextBox x:Name="txtRoomNumber" Margin="0,4,0,8"/>
+                        <TextBlock Text="Loại phòng"/>
+                        <TextBox x:Name="txtRoomType" Margin="0,4,0,8"/>
+                        <TextBlock Text="Giá cơ bản"/>
+                        <TextBox x:Name="txtBasePrice" Margin="0,4,0,8"/>
+                        <TextBlock Text="Sức chứa"/>
+                        <TextBox x:Name="txtCapacity" Margin="0,4,0,8"/>
+                        <TextBlock Text="Trạng thái"/>
+                        <ComboBox x:Name="cmbStatus" Margin="0,4,0,8"/>
+                        <TextBlock Text="Ảnh"/>
+                        <TextBox x:Name="txtImagePath" Margin="0,4,0,8"/>
+                        <TextBlock Text="Mô tả"/>
+                        <TextBox x:Name="txtDescription" Margin="0,4,0,10" Height="58" TextWrapping="Wrap" AcceptsReturn="True"/>
+
+                        <TextBlock Text="Đồ nội thất / vật tư" FontSize="18" FontWeight="Bold" Margin="0,0,0,8"/>
+                        <DataGrid x:Name="dgRoomItems"
+                                  AutoGenerateColumns="False"
+                                  Height="220"
+                                  CanUserAddRows="False"
+                                  CurrentCellChanged="DgRoomItems_CurrentCellChanged">
+                            <DataGrid.Columns>
+                                <DataGridCheckBoxColumn Header="Chọn" Binding="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="54"/>
+                                <DataGridTextColumn Header="Tên" Binding="{Binding ItemName}" IsReadOnly="True" Width="*"/>
+                                <DataGridTextColumn Header="Giá" Binding="{Binding UnitPrice, StringFormat={}{0:N0}}" IsReadOnly="True" Width="85"/>
+                                <DataGridTextColumn Header="SL" Binding="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="48"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <DockPanel Margin="0,10,0,10">
+                            <TextBlock Text="Giá sau khi cộng vật tư" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                            <TextBox x:Name="txtCalculatedPrice" Width="150" HorizontalAlignment="Right" DockPanel.Dock="Right" IsReadOnly="True" TextAlignment="Right"/>
+                        </DockPanel>
+
+                        <WrapPanel Margin="0,0,0,14">
+                            <Button x:Name="btnNew" Content="Mới" Width="70" Height="32" Margin="0,0,8,8"/>
+                            <Button x:Name="btnCalculate" Content="Tính giá" Width="82" Height="32" Margin="0,0,8,8"/>
+                            <Button x:Name="btnSave" Content="Lưu" Width="70" Height="32" Margin="0,0,8,8"/>
+                            <Button x:Name="btnDelete" Content="Xóa" Width="70" Height="32" Margin="0,0,8,8"/>
+                        </WrapPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
         </Grid>
     </Grid>
 </Window>

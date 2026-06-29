@@ -53,6 +53,7 @@ namespace staymanager_pj.Data
                     Id INT NOT NULL AUTO_INCREMENT,
                     RoomNumber VARCHAR(30) NOT NULL,
                     RoomType VARCHAR(80) NOT NULL,
+                    BasePrice DECIMAL(18,2) NOT NULL DEFAULT 0,
                     PricePerNight DECIMAL(18,2) NOT NULL DEFAULT 0,
                     Capacity INT NOT NULL DEFAULT 1,
                     Status INT NOT NULL,
@@ -62,6 +63,8 @@ namespace staymanager_pj.Data
                     PRIMARY KEY (Id)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
             ");
+
+            EnsureRoomColumns(context);
 
             context.Database.ExecuteSqlCommand(@"
                 CREATE TABLE IF NOT EXISTS Reservations (
@@ -145,6 +148,24 @@ namespace staymanager_pj.Data
             ");
 
             context.Database.ExecuteSqlCommand(@"
+                CREATE TABLE IF NOT EXISTS RoomInventoryItems (
+                    Id INT NOT NULL AUTO_INCREMENT,
+                    RoomId INT NOT NULL,
+                    InventoryItemId INT NOT NULL,
+                    ItemName VARCHAR(150) NOT NULL,
+                    Quantity INT NOT NULL DEFAULT 1,
+                    UnitPrice DECIMAL(18,2) NOT NULL DEFAULT 0,
+                    TotalPrice DECIMAL(18,2) NOT NULL DEFAULT 0,
+                    CreatedAt DATETIME NOT NULL,
+                    PRIMARY KEY (Id),
+                    INDEX IX_RoomInventoryItems_RoomId (RoomId),
+                    INDEX IX_RoomInventoryItems_InventoryItemId (InventoryItemId),
+                    CONSTRAINT FK_RoomInventoryItems_Rooms FOREIGN KEY (RoomId) REFERENCES Rooms(Id),
+                    CONSTRAINT FK_RoomInventoryItems_InventoryItems FOREIGN KEY (InventoryItemId) REFERENCES InventoryItems(Id)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+            ");
+
+            context.Database.ExecuteSqlCommand(@"
                 CREATE TABLE IF NOT EXISTS InventoryImports (
                     Id INT NOT NULL AUTO_INCREMENT,
                     ImportCode VARCHAR(30) NOT NULL,
@@ -163,13 +184,38 @@ namespace staymanager_pj.Data
             ");
         }
 
+        private static void EnsureRoomColumns(AppDbContext context)
+        {
+            var hasBasePrice = context.Database.SqlQuery<int>(@"
+                SELECT COUNT(*)
+                FROM INFORMATION_SCHEMA.COLUMNS
+                WHERE TABLE_SCHEMA = DATABASE()
+                  AND TABLE_NAME = 'Rooms'
+                  AND COLUMN_NAME = 'BasePrice';
+            ").Single();
+
+            if (hasBasePrice == 0)
+            {
+                context.Database.ExecuteSqlCommand(@"
+                    ALTER TABLE Rooms
+                    ADD COLUMN BasePrice DECIMAL(18,2) NOT NULL DEFAULT 0 AFTER RoomType;
+                ");
+
+                context.Database.ExecuteSqlCommand(@"
+                    UPDATE Rooms
+                    SET BasePrice = PricePerNight
+                    WHERE BasePrice = 0;
+                ");
+            }
+        }
+
         private static void Seed(AppDbContext context)
         {
             if (!context.Rooms.Any())
             {
-                context.Rooms.Add(new Room { RoomNumber = "101", RoomType = "Deluxe", PricePerNight = 1500000, Capacity = 2, Status = RoomStatus.Available, Description = "Phòng Deluxe hướng vườn" });
-                context.Rooms.Add(new Room { RoomNumber = "201", RoomType = "Premium", PricePerNight = 2500000, Capacity = 3, Status = RoomStatus.Available, Description = "Phòng Premium hướng biển" });
-                context.Rooms.Add(new Room { RoomNumber = "301", RoomType = "Royal Suite", PricePerNight = 5000000, Capacity = 4, Status = RoomStatus.Available, Description = "Suite cao cấp đầy đủ tiện nghi" });
+                context.Rooms.Add(new Room { RoomNumber = "101", RoomType = "Deluxe", BasePrice = 1500000, PricePerNight = 1500000, Capacity = 2, Status = RoomStatus.Available, Description = "Phòng Deluxe hướng vườn" });
+                context.Rooms.Add(new Room { RoomNumber = "201", RoomType = "Premium", BasePrice = 2500000, PricePerNight = 2500000, Capacity = 3, Status = RoomStatus.Available, Description = "Phòng Premium hướng biển" });
+                context.Rooms.Add(new Room { RoomNumber = "301", RoomType = "Royal Suite", BasePrice = 5000000, PricePerNight = 5000000, Capacity = 4, Status = RoomStatus.Available, Description = "Suite cao cấp đầy đủ tiện nghi" });
             }
 
             if (!context.InventoryItems.Any())

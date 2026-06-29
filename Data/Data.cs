@@ -18,6 +18,7 @@ namespace staymanager_pj.Data
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Room> Rooms { get; set; }
+        public DbSet<RoomInventoryItem> RoomInventoryItems { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<InvoiceItem> InvoiceItems { get; set; }
@@ -29,6 +30,7 @@ namespace staymanager_pj.Data
             modelBuilder.Entity<Customer>().ToTable("Customers").HasKey(x => x.Id);
             modelBuilder.Entity<Employee>().ToTable("Employees").HasKey(x => x.Id);
             modelBuilder.Entity<Room>().ToTable("Rooms").HasKey(x => x.Id);
+            modelBuilder.Entity<RoomInventoryItem>().ToTable("RoomInventoryItems").HasKey(x => x.Id);
             modelBuilder.Entity<Reservation>().ToTable("Reservations").HasKey(x => x.Id);
             modelBuilder.Entity<Invoice>().ToTable("Invoices").HasKey(x => x.Id);
             modelBuilder.Entity<InvoiceItem>().ToTable("InvoiceItems").HasKey(x => x.Id);
@@ -48,6 +50,7 @@ namespace staymanager_pj.Data
             modelBuilder.Entity<Room>().Property(x => x.RoomNumber).IsRequired().HasMaxLength(30);
             modelBuilder.Entity<Room>().Property(x => x.RoomType).IsRequired().HasMaxLength(80);
             modelBuilder.Entity<Room>().Property(x => x.Description).HasMaxLength(500);
+            modelBuilder.Entity<RoomInventoryItem>().Property(x => x.ItemName).IsRequired().HasMaxLength(150);
 
             modelBuilder.Entity<Invoice>().Property(x => x.InvoiceCode).IsRequired().HasMaxLength(30);
             modelBuilder.Entity<InvoiceItem>().Property(x => x.ItemName).IsRequired().HasMaxLength(150);
