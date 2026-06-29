@@ -22,18 +22,17 @@
                         HorizontalAlignment="Center"
                         Margin="0,24,0,60">
 
-                <TextBlock Text="Ocean View Master Suite"
+                <TextBlock x:Name="txtTitle"
                            FontSize="28"
                            FontWeight="Bold"
                            Foreground="#1F1F1F"/>
 
-                <TextBlock Text="2 Guests   1 King Bed   85 m²   4.9 (128 Reviews)"
+                <TextBlock x:Name="txtSubtitle"
                            FontSize="13"
                            Foreground="#666666"
                            Margin="0,6,0,18"/>
 
-                <!-- Gallery -->
-                <Grid Height="360">
+                <Grid Height="320">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1.35*"/>
                         <ColumnDefinition Width="*"/>
@@ -42,7 +41,16 @@
                     <Border Grid.Column="0"
                             Background="#DADADA"
                             CornerRadius="6"
-                            Margin="0,0,6,0"/>
+                            Margin="0,0,6,0">
+                        <Grid>
+                            <TextBlock x:Name="txtRoomNumber"
+                                       FontSize="54"
+                                       FontWeight="Bold"
+                                       Foreground="#4A4A4A"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
 
                     <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
@@ -82,65 +90,62 @@
                 <Grid Margin="0,34,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="310"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- Detail -->
                     <StackPanel Grid.Column="0"
                                 Margin="0,0,40,0">
-                        <TextBlock Text="Về Căn Phòng Này"
+                        <TextBlock Text="Về căn phòng này"
                                    FontSize="20"
                                    FontWeight="Bold"
                                    Foreground="#1F1F1F"
                                    Margin="0,0,0,14"/>
 
-                        <TextBlock Text="Ocean View Master Suite là biểu tượng của sự tĩnh lặng và đẳng cấp. Được thiết kế với tầm nhìn toàn cảnh ra đại dương bao la, căn phòng mang đến trải nghiệm nghỉ dưỡng hoàn hảo với ánh sáng tự nhiên ngập tràn."
+                        <TextBlock x:Name="txtDescription"
                                    FontSize="13"
                                    Foreground="#444444"
                                    TextWrapping="Wrap"
                                    LineHeight="22"/>
 
-                        <TextBlock Text="Tiện Nghi Cao Cấp"
+                        <TextBlock Text="Đồ nội thất và vật tư trong phòng"
                                    FontSize="20"
                                    FontWeight="Bold"
                                    Foreground="#1F1F1F"
                                    Margin="0,36,0,16"/>
 
-                        <UniformGrid Columns="3">
-                            <TextBlock Text="Wi-Fi tốc độ cao" Margin="0,6"/>
-                            <TextBlock Text="Điều hòa nhiệt độ" Margin="0,6"/>
-                            <TextBlock Text="Smart TV 65''" Margin="0,6"/>
-                            <TextBlock Text="Máy pha cà phê" Margin="0,6"/>
-                            <TextBlock Text="Bồn tắm nằm" Margin="0,6"/>
-                            <TextBlock Text="Phục vụ phòng 24/7" Margin="0,6"/>
-                        </UniformGrid>
+                        <ItemsControl x:Name="icRoomItems">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="2"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="White"
+                                            BorderBrush="#D9D9D9"
+                                            BorderThickness="1"
+                                            CornerRadius="6"
+                                            Padding="12"
+                                            Margin="0,0,12,12">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding ItemName}"
+                                                       FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding DetailText}"
+                                                       Foreground="#666666"
+                                                       FontSize="12"
+                                                       Margin="0,4,0,0"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
 
-                        <TextBlock Text="Đánh Giá Từ Khách Hàng"
-                                   FontSize="20"
-                                   FontWeight="Bold"
-                                   Foreground="#1F1F1F"
-                                   Margin="0,40,0,16"/>
-
-                        <Border Background="White"
-                                BorderBrush="#D9D9D9"
-                                BorderThickness="1"
-                                CornerRadius="6"
-                                Padding="16">
-                            <StackPanel>
-                                <TextBlock Text="Alexander M."
-                                           FontWeight="Bold"/>
-                                <TextBlock Text="★★★★★"
-                                           Foreground="#4A4A4A"
-                                           Margin="0,4"/>
-                                <TextBlock Text="Tuyệt vời! Tầm nhìn ra biển từ ban công thật sự đáng giá. Phòng cực kỳ sạch sẽ và dịch vụ không chê vào đâu được."
-                                           Foreground="#444444"
-                                           TextWrapping="Wrap"
-                                           Margin="0,8,0,0"/>
-                            </StackPanel>
-                        </Border>
+                        <TextBlock x:Name="txtNoItems"
+                                   Text="Phòng này chưa gắn đồ nội thất/vật tư."
+                                   Foreground="#666666"
+                                   Visibility="Collapsed"/>
                     </StackPanel>
 
-                    <!-- Booking box -->
                     <Border Grid.Column="1"
                             Background="White"
                             BorderBrush="#D9D9D9"
@@ -150,7 +155,7 @@
                             VerticalAlignment="Top">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="$450"
+                                <TextBlock x:Name="txtPrice"
                                            FontSize="22"
                                            FontWeight="Bold"
                                            Foreground="#1F1F1F"/>
@@ -160,72 +165,53 @@
                                            Margin="4,0,0,3"/>
                             </StackPanel>
 
-                            <Grid Margin="0,18,0,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
+                            <TextBlock x:Name="txtPriceBreakdown"
+                                       Foreground="#666666"
+                                       TextWrapping="Wrap"
+                                       Margin="0,8,0,18"/>
 
-                                <StackPanel Grid.Column="0"
-                                            Margin="0,0,6,0">
-                                    <TextBlock Text="NHẬN PHÒNG"
-                                               FontSize="11"
-                                               Foreground="#666666"/>
-                                    <DatePicker x:Name="dpCheckIn"
-                                                Height="32"/>
-                                </StackPanel>
+                            <TextBlock Text="NHẬN PHÒNG"
+                                       FontSize="11"
+                                       Foreground="#666666"/>
+                            <DatePicker x:Name="dpCheckIn"
+                                        Height="32"
+                                        Margin="0,4,0,12"/>
 
-                                <StackPanel Grid.Column="1"
-                                            Margin="6,0,0,0">
-                                    <TextBlock Text="TRẢ PHÒNG"
-                                               FontSize="11"
-                                               Foreground="#666666"/>
-                                    <DatePicker x:Name="dpCheckOut"
-                                                Height="32"/>
-                                </StackPanel>
-                            </Grid>
+                            <TextBlock Text="TRẢ PHÒNG"
+                                       FontSize="11"
+                                       Foreground="#666666"/>
+                            <DatePicker x:Name="dpCheckOut"
+                                        Height="32"
+                                        Margin="0,4,0,12"/>
 
                             <TextBlock Text="KHÁCH"
                                        FontSize="11"
-                                       Foreground="#666666"
-                                       Margin="0,14,0,4"/>
-
+                                       Foreground="#666666"/>
                             <ComboBox x:Name="cbGuests"
-                                      Height="34">
-                                <ComboBoxItem Content="1 Người lớn"/>
-                                <ComboBoxItem Content="2 Người lớn"/>
-                                <ComboBoxItem Content="2 Người lớn, 1 Trẻ em"/>
-                            </ComboBox>
+                                      Height="34"
+                                      Margin="0,4,0,18"/>
 
                             <Button x:Name="btnBookNow"
                                     Content="ĐẶT PHÒNG NGAY"
                                     Height="40"
-                                    Margin="0,18,0,18"
                                     Background="#4A4A4A"
                                     BorderBrush="#4A4A4A"
                                     Foreground="White"
                                     FontWeight="Bold"/>
 
-                            <DockPanel Margin="0,4">
-                                <TextBlock Text="$450 x 5 đêm"/>
-                                <TextBlock Text="$2,250"
-                                           DockPanel.Dock="Right"/>
-                            </DockPanel>
+                            <Separator Margin="0,18,0,12"/>
 
                             <DockPanel Margin="0,4">
-                                <TextBlock Text="Phí dịch vụ &amp; Thuế"/>
-                                <TextBlock Text="$225"
-                                           DockPanel.Dock="Right"/>
-                            </DockPanel>
-
-                            <Separator Margin="0,10"/>
-
-                            <DockPanel>
-                                <TextBlock Text="Tổng tiền"
-                                           FontWeight="Bold"/>
-                                <TextBlock Text="$2,475"
+                                <TextBlock Text="Trạng thái"/>
+                                <TextBlock x:Name="txtStatus"
                                            DockPanel.Dock="Right"
-                                           FontWeight="Bold"/>
+                                           FontWeight="SemiBold"/>
+                            </DockPanel>
+
+                            <DockPanel Margin="0,4">
+                                <TextBlock Text="Sức chứa"/>
+                                <TextBlock x:Name="txtCapacity"
+                                           DockPanel.Dock="Right"/>
                             </DockPanel>
                         </StackPanel>
                     </Border>
